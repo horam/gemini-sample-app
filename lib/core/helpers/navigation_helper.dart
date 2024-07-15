@@ -7,9 +7,10 @@ Future<void> navigateToChatScreen(
   BuildContext context,
   ModelSettings settings,
 ) async =>
-    Navigator.pushNamed(
+    Navigator.pushNamedAndRemoveUntil(
       context,
       ChatScreen.routeName,
+      ModalRoute.withName(SplashScreen.routeName),
       arguments: settings,
     );
 

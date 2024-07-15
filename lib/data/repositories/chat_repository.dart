@@ -1,6 +1,6 @@
 import 'dart:developer' as logger;
+import 'dart:io';
 
-import 'package:flutter/services.dart';
 import 'package:gemini_app/core/enums/enums.dart';
 import 'package:gemini_app/data/models/models.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -9,8 +9,8 @@ import 'package:image_picker/image_picker.dart';
 /// Class name for logging purposes.
 
 class ChatRepository {
-  late final GenerativeModel? _model;
-  late final ChatSession? _chat;
+  late GenerativeModel? _model;
+  late ChatSession? _chat;
   ModelType _modelType = ModelType.defaultModel;
   final List<ChatContent> _generatedContent = <ChatContent>[];
 
@@ -31,6 +31,7 @@ class ChatRepository {
 
   /// Initialize a chat with Gemini model.
   void init({required ModelSettings settings}) {
+    _generatedContent.clear();
     _modelType = settings.type;
     _model = GeminiModel.init(settings: settings);
     _chat = _model!.startChat();
@@ -66,9 +67,13 @@ class ChatRepository {
     try {
       /// Send the prompt to AI and save it locally.
       final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      final XFile? pickedFile = await picker.pickImage(
+        source: ImageSource.gallery,
+        maxHeight: 100,
+        maxWidth: 100,
+      );
       if (pickedFile != null) {
-        final ByteData imageBytes = await rootBundle.load(pickedFile.path);
+        final file = File(pickedFile.path);
         final content = [
           /// load multi modal prompt.
           Content.multi(
@@ -77,14 +82,14 @@ class ChatRepository {
               // The only accepted mime types are image/*.
               DataPart(
                 'image/jpeg',
-                imageBytes.buffer.asUint8List(),
+                file.readAsBytesSync(),
               ),
             ],
           ),
         ];
         _generatedContent.add(
           ChatContent.imageFromUserPrompt(
-            imageName: pickedFile.path,
+            path: pickedFile.path,
             text: message,
           ),
         );

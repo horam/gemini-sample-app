@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 /// A class to show content from user and AI.
@@ -24,11 +26,11 @@ class ChatContent {
 
   /// Constructs a ChatContent from user prompt.
   factory ChatContent.imageFromUserPrompt({
-    required String imageName,
+    required String path,
     required String? text,
   }) =>
       ChatContent(
-        image: Image.asset(imageName),
+        image: Image.file(File(path)),
         text: text,
         fromUser: true,
       );

@@ -11,7 +11,7 @@ analyzer:
   errors:
     avoid_classes_with_only_static_members: ignore
 include: package:flutter_lints/flutter.yaml
- ignore
+
 linter:
   rules:
     - always_declare_return_types
