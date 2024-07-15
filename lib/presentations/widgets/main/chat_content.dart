@@ -9,12 +9,12 @@ import 'package:gemini_app/states/states.dart';
 class ChatContentWidget extends StatefulWidget {
   /// Constructs an instance of the chat message in the chat screen.
   const ChatContentWidget({
-    required this.apiKey,
+    required this.isAPILoaded,
     super.key,
   });
 
-  /// Model's APIKey.
-  final String apiKey;
+  /// Whether app has  a valid key.
+  final bool isAPILoaded;
 
   @override
   State<ChatContentWidget> createState() => _ChatWidgetState();
@@ -40,7 +40,7 @@ class _ChatWidgetState extends State<ChatContentWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: widget.apiKey.isNotEmpty
+              child: widget.isAPILoaded
                   ? _buildChatMessages()
                   : const KeyErrorWidget(),
             ),

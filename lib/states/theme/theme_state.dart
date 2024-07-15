@@ -8,6 +8,15 @@ class ThemeState {
   /// Constructs a light version of the theme.
   factory ThemeState.light() => ThemeState(
         themeData: ThemeData.light(useMaterial3: true).copyWith(
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
+            titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           textButtonTheme: TextButtonThemeData(
             style: TextButton.styleFrom(
               backgroundColor: Colors.blue,
@@ -31,6 +40,15 @@ class ThemeState {
   /// Constructs a dark version of the theme.
   factory ThemeState.dark() => ThemeState(
         themeData: ThemeData.dark(useMaterial3: true).copyWith(
+          appBarTheme: const AppBarTheme(
+            backgroundColor: Colors.red,
+            foregroundColor: Colors.white,
+            titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           textButtonTheme: TextButtonThemeData(
             style: TextButton.styleFrom(
               backgroundColor: Colors.red,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gemini_app/core/core.dart';
 import 'package:gemini_app/states/states.dart';
 
 /// button to change the application theme based on [ThemeState].
@@ -15,8 +14,8 @@ class AppBarActions extends StatelessWidget {
       bloc: themeBloc,
       builder: (context, ThemeState state) => IconButton(
         icon: state.isDark
-            ? Icon(Icons.light_mode, color: context.theme.iconTheme.color)
-            : Icon(Icons.dark_mode, color: context.theme.iconTheme.color),
+            ? const Icon(Icons.light_mode)
+            : const Icon(Icons.dark_mode),
         onPressed: () => themeBloc.add(SwitchThemeEvent()),
       ),
     );

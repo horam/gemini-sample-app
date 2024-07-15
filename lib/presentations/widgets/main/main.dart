@@ -1,2 +1,2 @@
-export 'chat_widget.dart';
+export 'chat_content.dart';
 export 'message_widget.dart';

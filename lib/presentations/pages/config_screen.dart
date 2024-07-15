@@ -47,8 +47,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
         appBar: AppBar(
           leading: const BackButtonWidget(),
           backgroundColor: context.theme.primaryColorDark,
-          title:
-              Text('Config Screen', style: context.theme.textTheme.titleLarge),
+          title: const Text('Config Screen'),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16),
@@ -123,7 +122,10 @@ class _ConfigScreenState extends State<ConfigScreen> {
                     color: context.theme.dividerColor,
                   ),
                   const SizedBox(height: 32),
-                  SubmitButton(onPressed: _submitForm),
+                  PrimaryButton(
+                    onPressed: _submitForm,
+                    text: 'submit',
+                  ),
                 ],
               ),
             ),

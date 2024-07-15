@@ -22,10 +22,7 @@ class ChatScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: context.theme.primaryColorDark,
         elevation: 8,
-        title: Text(
-          'model: ${context.read<ChatRepository>().modelName}',
-          style: context.theme.textTheme.titleLarge,
-        ),
+        title: Text('model: ${context.read<ChatRepository>().modelName}'),
         leading: const BackButtonWidget(),
         actions: <Widget>[
           BlocProvider.value(
@@ -39,7 +36,7 @@ class ChatScreen extends StatelessWidget {
           chatRepository: context.read<ChatRepository>()
             ..init(settings: settings),
         ),
-        child: const ChatContentWidget(apiKey: API.apiKey),
+        child: ChatContentWidget(isAPILoaded: API().isLoaded),
       ),
     );
   }

@@ -7,7 +7,7 @@ class GeminiModel {
   static GenerativeModel init({required ModelSettings settings}) =>
       GenerativeModel(
         model: settings.type.name,
-        apiKey: API.apiKey,
+        apiKey: API().apiKey,
         safetySettings: settings.safetySettings ?? const [],
         generationConfig: settings.generationConfig,
       );

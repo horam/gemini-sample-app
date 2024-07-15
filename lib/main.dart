@@ -4,8 +4,9 @@ import 'package:gemini_app/app.dart';
 import 'package:gemini_app/data/data.dart';
 import 'package:gemini_app/states/states.dart';
 
-void main() {
-  // initialize [GoogleGemini]
+void main() async {
+  /// fetch the key from .env file.
+  await API().init();
 
   runApp(
     RepositoryProvider(

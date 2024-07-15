@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gemini_app/core/core.dart';
 
 /// Back button in header section of our screens.
 class BackButtonWidget extends StatelessWidget {
@@ -7,10 +6,7 @@ class BackButtonWidget extends StatelessWidget {
   const BackButtonWidget({super.key});
   @override
   Widget build(BuildContext context) => IconButton(
-        icon: Icon(
-          Icons.arrow_back,
-          color: context.theme.iconTheme.color,
-        ),
+        icon: const Icon(Icons.arrow_back),
         onPressed: () => Navigator.pop(context),
       );
 }

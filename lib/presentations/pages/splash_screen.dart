@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gemini_app/core/core.dart';
 import 'package:gemini_app/data/data.dart';
+import 'package:gemini_app/presentations/presentations.dart';
 
 /// The initial screen that user see.
 class SplashScreen extends StatelessWidget {
@@ -23,37 +24,28 @@ class SplashScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: context.theme.textTheme.headlineLarge,
               ),
-              const SizedBox(height: 64),
               Text(
-                // ignore: missing_whitespace_between_adjacent_strings
-                'Please choose that you want to use the Gemini Flash model with'
-                'default config or you want customize the default settings.',
+                'You can experiment with this app in two ways:',
                 style: context.theme.textTheme.bodyLarge,
               ),
-              const SizedBox(height: 64),
+              Text(
+                '1. Use Gemini Flash model with default config \n'
+                '2. Use other models and/or customize the default settings.',
+                style: context.theme.textTheme.bodyLarge,
+              ),
               Column(
                 children: <Widget>[
-                  TextButton(
-                    style: context.theme.textButtonTheme.style?.copyWith(
-                      fixedSize: WidgetStateProperty.all(
-                        Size(context.mediaQuery.size.width - 32, 36),
-                      ),
-                    ),
+                  PrimaryButton(
                     onPressed: () async => navigateToChatScreen(
                       context,
                       ModelSettings(),
                     ),
-                    child: const Text('Use Gemini Flash model'),
+                    text: 'Use Gemini Flash model',
                   ),
                   const SizedBox(height: 16),
-                  TextButton(
-                    style: context.theme.textButtonTheme.style?.copyWith(
-                      fixedSize: WidgetStateProperty.all(
-                        Size(context.mediaQuery.size.width - 32, 36),
-                      ),
-                    ),
+                  PrimaryButton(
                     onPressed: () async => navigateToConfigScreen(context),
-                    child: const Text('Use a customized model'),
+                    text: 'Use a customized model',
                   ),
                 ],
               ),
