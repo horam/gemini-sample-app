@@ -61,17 +61,39 @@ class ChatRepository {
     return text;
   }
 
-  /// send image from user to the model.
-  Future<String?> sendImagePrompt(String message) async {
-    String? text;
+  /// Adding users' Image and message to the content.
+  Future<XFile?> addImageMessageToContent(String message) async {
+    XFile? pickedFile;
     try {
       /// Send the prompt to AI and save it locally.
       final picker = ImagePicker();
-      final XFile? pickedFile = await picker.pickImage(
+      pickedFile = await picker.pickImage(
         source: ImageSource.gallery,
         maxHeight: 100,
         maxWidth: 100,
       );
+      if (pickedFile != null) {
+        _generatedContent.add(
+          ChatContent.imageFromUserPrompt(
+            path: pickedFile.path,
+            text: message,
+          ),
+        );
+      }
+    } on Exception catch (error, stackTrace) {
+      logger.log(
+        '$tag:error in picking the image and save it locally. error: $error',
+        stackTrace: stackTrace,
+      );
+      rethrow;
+    }
+    return pickedFile;
+  }
+
+  /// send image from user to the model.
+  Future<String?> sendImagePrompt(String message, XFile? pickedFile) async {
+    String? text;
+    try {
       if (pickedFile != null) {
         final file = File(pickedFile.path);
         final content = [
@@ -87,12 +109,6 @@ class ChatRepository {
             ],
           ),
         ];
-        _generatedContent.add(
-          ChatContent.imageFromUserPrompt(
-            path: pickedFile.path,
-            text: message,
-          ),
-        );
 
         /// save the response to show it on the chat screen.
         final response = await _model!.generateContent(content);

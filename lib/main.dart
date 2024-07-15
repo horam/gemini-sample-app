@@ -6,6 +6,7 @@ import 'package:gemini_app/states/states.dart';
 
 void main() async {
   /// fetch the key from .env file.
+
   await API().init();
 
   runApp(

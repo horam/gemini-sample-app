@@ -13,7 +13,7 @@ class ChatContentWidget extends StatefulWidget {
     super.key,
   });
 
-  /// Whether app has  a valid key.
+  /// Whether app has  a valid
   final bool isAPILoaded;
 
   @override

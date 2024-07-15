@@ -1,5 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gemini_app/core/core.dart';
 import 'package:gemini_app/data/data.dart';
 import 'package:gemini_app/states/chat/chat.dart';
 
@@ -55,22 +54,32 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     SendImageEvent event,
     Emitter<ChatState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true));
+    final file = await _chatRepository.addImageMessageToContent(
+      event.message,
+    );
+
+    emit(
+      state.copyWith(
+        isLoading: true,
+        contentsCount: _chatRepository.contentCount,
+        contents: _chatRepository.contents,
+      ),
+    );
     try {
       final String? response = await _chatRepository.sendImagePrompt(
         event.message,
+        file,
       );
+
       final int count = _chatRepository.contentCount;
       final List<ChatContent> contents = _chatRepository.contents;
-      final ModelType modelType = _chatRepository.model;
 
       emit(
-        ChatState(
+        state.copyWith(
           response: response,
           isLoading: false,
           contentsCount: count,
           contents: contents,
-          model: modelType,
         ),
       );
     } on Exception catch (error) {
