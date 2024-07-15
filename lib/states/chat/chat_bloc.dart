@@ -1,37 +1,52 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gemini_app/core/core.dart';
 import 'package:gemini_app/data/data.dart';
 import 'package:gemini_app/states/chat/chat.dart';
 
+/// A class the wraps the related logic to Chat.
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
-  final ChatRepository _chatRepository;
+  /// Creates an instance of [ChatBloc].
   ChatBloc({required ChatRepository chatRepository})
       : _chatRepository = chatRepository,
         super(ChatState.init()) {
     on<SendMessageEvent>(_onSendMessageEvent);
     on<SendImageEvent>(_onImageMessageEvent);
   }
+  final ChatRepository _chatRepository;
 
   Future<void> _onSendMessageEvent(
     SendMessageEvent event,
     Emitter<ChatState> emit,
   ) async {
-    emit(state.copyWith(isLoading: true));
+    _chatRepository.addMessageToContent(event.message);
+    emit(
+      state.copyWith(
+        isLoading: true,
+        contentsCount: _chatRepository.contentCount,
+        contents: _chatRepository.contents,
+      ),
+    );
 
     try {
-      final String? response = await _chatRepository.sendMessage(event.message);
+      final String? response = await _chatRepository.sendTextMessage(
+        event.message,
+      );
       final int count = _chatRepository.contentCount;
       final List<ChatContent> contents = _chatRepository.contents;
       emit(
-        ChatState(
+        state.copyWith(
           response: response,
           isLoading: false,
           contentsCount: count,
           contents: contents,
         ),
       );
-    } catch (e) {
+    } on Exception catch (error) {
       emit(
-        state.copyWith(error: 'No response from Gemini.', isLoading: false),
+        state.copyWith(
+          error: 'No response from Gemini: $error.',
+          isLoading: false,
+        ),
       );
     }
   }
@@ -47,6 +62,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       );
       final int count = _chatRepository.contentCount;
       final List<ChatContent> contents = _chatRepository.contents;
+      final ModelType modelType = _chatRepository.model;
 
       emit(
         ChatState(
@@ -54,11 +70,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           isLoading: false,
           contentsCount: count,
           contents: contents,
+          model: modelType,
         ),
       );
-    } catch (e) {
+    } on Exception catch (error) {
       emit(
-        state.copyWith(error: 'No response from Gemini.', isLoading: false),
+        state.copyWith(
+          error: 'No response from Gemini: $error.',
+          isLoading: false,
+        ),
       );
     }
   }

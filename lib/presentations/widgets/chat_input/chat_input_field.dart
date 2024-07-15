@@ -1,30 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:gemini_app/core/extensions.dart';
+import 'package:gemini_app/core/extensions/build_context.dart';
 
+/// A widget to handle the chat input functionality.
 class ChatInputField extends StatelessWidget {
-  final void Function(String)? onSubmitted;
-  final TextEditingController? controller;
-  final FocusNode? focusNode;
-
-  /// Construct a Text Input Field for chat.
+  /// Constructs a Text Input Field for chat.
   const ChatInputField({
     required this.focusNode,
     required this.controller,
-    required this.onSubmitted,
     super.key,
   });
+
+  // /// Called when the user indicates that they are done editing the text.
+  // final void Function(String)? onSubmitted;
+
+  /// A [TextEditingController] that Controls the text being edited.
+  final TextEditingController? controller;
+
+  /// Defines the keyboard focus for this widget.
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) => Expanded(
         child: TextField(
           focusNode: focusNode,
-          decoration: setDecoration(context),
+          decoration: _setDecoration(context),
           controller: controller,
-          onSubmitted: onSubmitted,
+          // onSubmitted: onSubmitted,
         ),
       );
 
-  InputDecoration setDecoration(BuildContext context) => InputDecoration(
+  InputDecoration _setDecoration(BuildContext context) => InputDecoration(
         contentPadding: const EdgeInsets.all(15),
         hintText: 'Message Gemini',
         border: OutlineInputBorder(

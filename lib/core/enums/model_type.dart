@@ -1,15 +1,39 @@
+/// Enum that saves Gemini [ModelType].
 enum ModelType {
+  /// Gemini Flash model.
   geminiFlash(name: 'gemini-1.5-flash'),
 
+  /// Gemini Pro model.
   geminiPro(name: 'gemini-1.5-pro'),
 
+  /// TextEmbedding model.
   textEmbedding(name: 'text-embedding-004'),
 
+  /// Aqa model.
   aqa(name: 'aqa');
 
-  static String get defaultModel => ModelType.geminiFlash.name;
-
+  /// Constructs an instance of Gemini [ModelType].
   const ModelType({required this.name});
 
+  /// provides the default model.
+  static ModelType get defaultModel => ModelType.geminiFlash;
+
+  /// Generate [ModelType] from their name.
+  static ModelType fromText(String value) {
+    switch (value) {
+      case 'gemini-1.5-flash':
+        return ModelType.geminiFlash;
+      case 'gemini-1.5-pro':
+        return ModelType.geminiPro;
+      case 'text-embedding-004':
+        return ModelType.textEmbedding;
+      case 'aqa':
+        return ModelType.aqa;
+      default:
+        return ModelType.geminiFlash;
+    }
+  }
+
+  /// Model type.
   final String name;
 }

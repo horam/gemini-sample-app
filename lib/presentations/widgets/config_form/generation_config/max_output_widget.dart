@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 
+/// A widget to receive number of models' max output token from user.
 class MaxOutputTokenWidget extends StatelessWidget {
-  final TextEditingController controller;
-  final FocusNode focusNode;
+  /// Constructs an instance of [MaxOutputTokenWidget].
   const MaxOutputTokenWidget({
-    super.key,
     required this.focusNode,
     required this.controller,
+    super.key,
   });
+
+  /// A [TextEditingController] for the [TextFormField] widget.
+  final TextEditingController controller;
+
+  /// A focus node for the [TextFormField] widget.
+  final FocusNode focusNode;
+
   @override
   Widget build(BuildContext context) => TextFormField(
         controller: controller,
@@ -20,8 +27,9 @@ class MaxOutputTokenWidget extends StatelessWidget {
         validator: (value) {
           if (value == null) {
             return 'Please enter max output tokens';
-          } else if ((int.tryParse(value) ?? 0) > 8 ||
-              (int.tryParse(value) ?? 0) < 1) {
+          } else if (value.isNotEmpty &&
+              ((int.tryParse(value) ?? 0) > 8 ||
+                  (int.tryParse(value) ?? 0) < 1)) {
             return 'Max Output token should be in the range [1,8]';
           }
           return null;

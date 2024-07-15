@@ -1,56 +1,66 @@
-import 'package:flutter/services.dart';
-import 'package:gemini_app/core/enums/enums.dart';
-import 'package:gemini_app/data/models/content.dart';
-import 'package:gemini_app/data/models/gemini_settings.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
 import 'dart:developer' as logger;
 
+import 'package:flutter/services.dart';
+import 'package:gemini_app/core/enums/enums.dart';
+import 'package:gemini_app/data/models/models.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:image_picker/image_picker.dart';
 
+/// Class name for logging purposes.
+
 class ChatRepository {
-  late final GenerativeModel _model;
-  late final ChatSession _chat;
+  late final GenerativeModel? _model;
+  late final ChatSession? _chat;
+  ModelType _modelType = ModelType.defaultModel;
   final List<ChatContent> _generatedContent = <ChatContent>[];
 
-  static const TAG = 'ChatRepository';
+  /// class name to be used in our logs.
+  static const tag = 'ChatRepository';
 
-  void init() {
-    _model = GeminiSettings.initGeminiFlesh(
-      safetySettings: [
-        SafetySetting(HarmCategory.harassment, HarmBlockThreshold.high),
-        SafetySetting(HarmCategory.hateSpeech, HarmBlockThreshold.high),
-      ],
-    );
-    _chat = _model.startChat();
-  }
-
-  void update(ModelType type) {
-    // clear the chat cache.
-    _generatedContent.clear();
-  }
-
+  /// All of generated contents.
   List<ChatContent> get contents => _generatedContent;
 
+  /// number of contents.
   int get contentCount => _generatedContent.length;
 
-  Future<String?> sendMessage(String message) async {
+  /// Chosen model type name.
+  String get modelName => _modelType.name;
+
+  /// Chosen model name.
+  ModelType get model => _modelType;
+
+  /// Initialize a chat with Gemini model.
+  void init({required ModelSettings settings}) {
+    _modelType = settings.type;
+    _model = GeminiModel.init(settings: settings);
+    _chat = _model!.startChat();
+  }
+
+  /// Adding users' message to the content.
+  void addMessageToContent(String message) {
+    _generatedContent.add(ChatContent.messageFromUserPrompt(text: message));
+  }
+
+  /// Sending users' message to the model.
+  Future<String?> sendTextMessage(String message) async {
     String? text;
     try {
-      /// save the prompt locally and send it to the AI.
-      _generatedContent.add(ChatContent.messageFromUserPrompt(text: message));
-      final response = await _chat.sendMessage(Content.text(message));
+      /// send the prompt to the AI model.
+      final response = await _chat!.sendMessage(Content.text(message));
 
       /// receive the response and save it locally.
-      final text = response.text;
-      _generatedContent.add(ChatContent.messageFromAI(text: text));
-    } catch (error, stackTrace) {
-      logger.log('$TAG:error in sending message. error: $error',
-          stackTrace: stackTrace);
+      _generatedContent.add(ChatContent.messageFromAI(text: response.text));
+    } on Exception catch (error, stackTrace) {
+      logger.log(
+        '$tag:error in sending message. error: $error',
+        stackTrace: stackTrace,
+      );
       rethrow;
     }
     return text;
   }
 
+  /// send image from user to the model.
   Future<String?> sendImagePrompt(String message) async {
     String? text;
     try {
@@ -58,28 +68,36 @@ class ChatRepository {
       final picker = ImagePicker();
       final pickedFile = await picker.pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
-        ByteData imageBytes = await rootBundle.load(pickedFile.path);
+        final ByteData imageBytes = await rootBundle.load(pickedFile.path);
         final content = [
           /// load multi modal prompt.
-          Content.multi([
-            TextPart(message),
-            // The only accepted mime types are image/*.
-            DataPart('image/jpeg', imageBytes.buffer.asUint8List()),
-          ])
+          Content.multi(
+            [
+              TextPart(message),
+              // The only accepted mime types are image/*.
+              DataPart(
+                'image/jpeg',
+                imageBytes.buffer.asUint8List(),
+              ),
+            ],
+          ),
         ];
-        _generatedContent.add(ChatContent.imageFromUserPrompt(
-          imageName: pickedFile.path,
-          text: message,
-        ));
+        _generatedContent.add(
+          ChatContent.imageFromUserPrompt(
+            imageName: pickedFile.path,
+            text: message,
+          ),
+        );
 
         /// save the response to show it on the chat screen.
-        var response = await _model.generateContent(content);
-        var text = response.text;
-        _generatedContent.add(ChatContent.messageFromAI(text: text));
+        final response = await _model!.generateContent(content);
+        _generatedContent.add(ChatContent.messageFromAI(text: response.text));
       }
-    } catch (error, stackTrace) {
-      logger.log('$TAG:error in sending image prompts. error: $error',
-          stackTrace: stackTrace);
+    } on Exception catch (error, stackTrace) {
+      logger.log(
+        '$tag:error in sending image prompts. error: $error',
+        stackTrace: stackTrace,
+      );
       rethrow;
     }
 

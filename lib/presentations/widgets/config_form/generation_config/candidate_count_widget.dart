@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
+///  A textfield to show the candidate count number.
 class CandidateCountWidget extends StatelessWidget {
-  final TextEditingController controller;
-  final FocusNode focusNode;
-
-  /// Construct an instance of a form field to get Candidate count from user.
+  /// Constructs an instance of a form field to get Candidate count from user.
   const CandidateCountWidget({
-    super.key,
     required this.controller,
     required this.focusNode,
+    super.key,
   });
+
+  /// A [TextEditingController] for the [TextFormField] widget.
+  final TextEditingController controller;
+
+  /// A focus node for the [TextFormField] widget.
+  final FocusNode focusNode;
 
   @override
   Widget build(BuildContext context) => TextFormField(

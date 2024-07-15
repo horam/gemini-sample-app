@@ -6,31 +6,38 @@ import 'package:gemini_app/data/data.dart';
 import 'package:gemini_app/presentations/presentations.dart';
 import 'package:gemini_app/states/states.dart';
 
+/// A widget that displays the chat page.
 class ChatScreen extends StatelessWidget {
-  const ChatScreen({super.key, required this.title});
+  /// Constructs an instance of [ChatScreen] widget.
+  const ChatScreen({super.key});
 
-  final String title;
+  /// [ChatScreen] route name to be used in routing system.
+  static const routeName = 'chat_screen';
 
   @override
   Widget build(BuildContext context) {
+    final settings =
+        ModalRoute.of(context)!.settings.arguments! as ModelSettings;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: context.theme.colorScheme.primary,
+        backgroundColor: context.theme.primaryColorDark,
+        elevation: 8,
         title: Text(
-          title,
-          style: context.theme.textTheme.titleLarge
-              ?.copyWith(color: context.theme.colorScheme.onSurface),
+          'model: ${context.read<ChatRepository>().modelName}',
+          style: context.theme.textTheme.titleLarge,
         ),
-        actions: [
+        leading: const BackButtonWidget(),
+        actions: <Widget>[
           BlocProvider.value(
             value: BlocProvider.of<ThemeBloc>(context),
-            child: AppBarActions(),
-          )
+            child: const AppBarActions(),
+          ),
         ],
       ),
       body: BlocProvider<ChatBloc>(
         create: (BuildContext context) => ChatBloc(
-          chatRepository: context.read<ChatRepository>()..init(),
+          chatRepository: context.read<ChatRepository>()
+            ..init(settings: settings),
         ),
         child: const ChatContentWidget(apiKey: API.apiKey),
       ),

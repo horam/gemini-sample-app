@@ -1,5 +1,8 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:developer' as logger;
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+/// A class for observing the behavior of [Bloc] instances.
 
 class AppBlocObserver extends BlocObserver {
   @override
