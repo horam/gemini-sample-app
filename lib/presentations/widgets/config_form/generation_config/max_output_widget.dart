@@ -28,8 +28,8 @@ class MaxOutputTokenWidget extends StatelessWidget {
           if (value == null) {
             return 'Please enter max output tokens';
           } else if (value.isNotEmpty &&
-              ((int.tryParse(value) ?? 0) > 8 ||
-                  (int.tryParse(value) ?? 0) < 1)) {
+              ((num.tryParse(value) ?? 0) > 8 ||
+                  (num.tryParse(value) ?? 0) < 1)) {
             return 'Max Output token should be in the range [1,8]';
           }
           return null;

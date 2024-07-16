@@ -3,15 +3,6 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 /// An extension to extend the default functionality  of [HarmCategory]
 /// in 'google_generative_ai' package.
 extension HarmType on HarmCategory {
-  // unspecifiedType: unspecified.
-  // harassment:  Malicious, intimidating, bullying, or abusive comments
-  // targeting another individual.
-  // hateSpeech:   Negative or harmful comments targeting identity and/or
-  //protected attributes.
-  // sexuallyExplicit: Contains references to sexual acts or other lewd content.
-  // dangerousContent: Promotes or enables access to harmful goods, services,
-  // and activities.
-
   /// Provides a list of available [HarmCategory] values.
   static List<HarmCategory> get values => HarmCategory.values;
 

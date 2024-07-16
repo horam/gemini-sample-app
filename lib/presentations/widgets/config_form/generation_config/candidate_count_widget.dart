@@ -27,6 +27,10 @@ class CandidateCountWidget extends StatelessWidget {
         validator: (value) {
           if (value == null) {
             return 'Please enter valid candidate count';
+          } else if (value.isNotEmpty &&
+              ((int.tryParse(value) ?? 0) > 8 ||
+                  (int.tryParse(value) ?? 0) < 1)) {
+            return 'Candidate count should be in the range [1,8]';
           }
           return null;
         },

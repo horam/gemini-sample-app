@@ -110,7 +110,7 @@ class ChatRepository {
           ),
         ];
 
-        /// save the response to show it on the chat screen.
+        /// Get the response and add it locally.
         final response = await _model!.generateContent(content);
         _generatedContent.add(ChatContent.messageFromAI(text: response.text));
       }

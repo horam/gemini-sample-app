@@ -26,6 +26,10 @@ class TemperatureWidget extends StatelessWidget {
         validator: (value) {
           if (value == null) {
             return 'Please enter valid temperature.';
+          } else if (value.isNotEmpty &&
+              ((num.tryParse(value) ?? 0) > 2.0 ||
+                  (num.tryParse(value) ?? 0) < 0.0)) {
+            return 'Temperature should be in the range [0.0,2.0]';
           }
           return null;
         },

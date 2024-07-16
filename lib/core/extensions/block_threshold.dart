@@ -2,12 +2,6 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 
 /// An extension on Google Generative ai enum [HarmBlockThreshold].
 extension BlockThreshold on HarmBlockThreshold {
-  /// unspecified: Threshold is unspecified, block using default threshold.
-  /// Low: block when medium or high probability of unsafe content.
-  /// Medium: block when medium or high probability of unsafe content.
-  /// High: block when high probability of unsafe content.
-  /// None: Always show regardless of probability of unsafe content.
-
   /// Provides a list of available [HarmBlockThreshold] values.
   static List<HarmBlockThreshold> get values => HarmBlockThreshold.values;
 

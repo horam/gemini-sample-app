@@ -27,6 +27,10 @@ class TopPWidget extends StatelessWidget {
         validator: (value) {
           if (value == null) {
             return 'Please enter top P';
+          } else if (value.isNotEmpty &&
+              ((num.tryParse(value) ?? 0) > 1.0 ||
+                  (num.tryParse(value) ?? 0) < 0.0)) {
+            return 'Top-P should be in the range [0.0, 1.0]';
           }
           return null;
         },

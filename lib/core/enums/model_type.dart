@@ -6,9 +6,6 @@ enum ModelType {
   /// Gemini Pro model.
   geminiPro(name: 'gemini-1.5-pro'),
 
-  /// TextEmbedding model.
-  textEmbedding(name: 'text-embedding-004'),
-
   /// Aqa model.
   aqa(name: 'aqa');
 
@@ -25,8 +22,6 @@ enum ModelType {
         return ModelType.geminiFlash;
       case 'gemini-1.5-pro':
         return ModelType.geminiPro;
-      case 'text-embedding-004':
-        return ModelType.textEmbedding;
       case 'aqa':
         return ModelType.aqa;
       default:

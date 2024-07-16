@@ -33,6 +33,6 @@ class API {
   /// Provides the api key.
   String get apiKey => _apiKey;
 
-  /// check if key is provided in ".env" file.
+  /// check if key is provided correctly in ".env" file.
   bool get isLoaded => _apiKey.isNotEmpty;
 }
