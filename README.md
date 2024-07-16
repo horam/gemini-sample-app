@@ -1,16 +1,22 @@
-# gemini_app
+# gemini_sample_app
+This project demonstrate a prototype to investigate capabilities of Google's
+Generative AI models to build AI powered applications.
 
-A new Flutter project.
+## Getting started
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+# Get an API key
+Using the Google AI Dart SDK requires an API key.
+see https://ai.google.dev/tutorials/setup for how to create one.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Setup environment
+
+create `.env` file under your folder structure and put your key in it:
+
+```
+API_KEY='Your_api_key'
+```
+
+Now enjoy testing the Google's Generative AI models with this app.
